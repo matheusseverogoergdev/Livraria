@@ -15,7 +15,15 @@ CREATE TABLE editora (
 );
 
 CREATE TABLE livro (
-	
+	idLivro INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(60) NOT NULL,
+    autor VARCHAR(60) NOT NULL,
+    assunto VARCHAR(100) NOT NULL,
+    isbn VARCHAR(20) NOT NULL,
+    estoque INT NOT NULL,
+    preco FLOAT NOT NULL,
+    idEditora INT NOT NULL,
+    FOREIGN KEY (idEditora) REFERENCES editora(idEditora)
 );
 
 alter table cliente add UNIQUE(cpf);

@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import br.com.senactech.tLivrariaOOJF.model.Cliente;
 import br.com.senactech.tLivrariaOOJF.services.ClienteServicos;
 import br.com.senactech.tLivrariaOOJF.services.ServicosFactory;
+import br.com.senactech.tLivrariaOOJF.util.ValidaCPF;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -56,6 +57,10 @@ public class jfCliente extends javax.swing.JFrame {
         jbCancelar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtClientes = new javax.swing.JTable();
+        jbEditar = new javax.swing.JButton();
+        jbConfirmar = new javax.swing.JButton();
+        jbDeletar = new javax.swing.JButton();
+        jbSair = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,6 +124,19 @@ public class jfCliente extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jtClientes);
         jtClientes.getAccessibleContext().setAccessibleName("");
 
+        jbEditar.setText("Editar");
+        jbEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEditarActionPerformed(evt);
+            }
+        });
+
+        jbConfirmar.setText("Confirmar");
+
+        jbDeletar.setText("Deletar");
+
+        jbSair.setText("Sair");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -149,11 +167,21 @@ public class jfCliente extends javax.swing.JFrame {
                                 .addComponent(jtfTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jbSalvar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jbLimpar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jbCancelar)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jbSalvar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jbLimpar)
+                                .addGap(18, 18, 18)
+                                .addComponent(jbCancelar))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jbEditar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbConfirmar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbDeletar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbSair)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -184,8 +212,14 @@ public class jfCliente extends javax.swing.JFrame {
                     .addComponent(jbLimpar)
                     .addComponent(jbCancelar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbEditar)
+                    .addComponent(jbConfirmar)
+                    .addComponent(jbDeletar)
+                    .addComponent(jbSair))
+                .addContainerGap())
         );
 
         jtfNomeCliente.getAccessibleContext().setAccessibleName("");
@@ -238,55 +272,100 @@ public class jfCliente extends javax.swing.JFrame {
         }
     }
     
-    
-    private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
-        // TODO add your handling code here:
-        Cliente cli = new Cliente();
-        cli.setNomeCliente(jtfNomeCliente.getText());
-        cli.setTelefone(jtfTelefone.getText());
-        cli.setEndereco(jtfEndereco.getText());
-        boolean doc = false;
-
-        int tPessoa = 0;
-        if (jrbCpf.isSelected() && !jrbCnpj.isSelected()) {
-            tPessoa = 1;
-        } else if (!jrbCpf.isSelected() && jrbCnpj.isSelected()) {
-            tPessoa = 2;
-        }else{
-            JOptionPane.showMessageDialog(this, "Selecione tipo de cliente.");
-        }
-        Cliente cliCpfCnpj;
-        cliCpfCnpj = cadClientes.pesqCli(tPessoa, jtfCpfCnpj.getText());
-        if (jrbCpf.isSelected() && cliCpfCnpj.getCpf() == null) {
-            cli.setCpf(jtfCpfCnpj.getText());
-            cli.setCnpj(null);
-            doc = false;
-        } else if (jrbCnpj.isSelected() && cliCpfCnpj.getCnpj() == null) {
-            cli.setCpf(null);
-            cli.setCnpj(jtfCpfCnpj.getText());
-            doc = false;
-        }
-        if (cadClientes.verificaCliente(cliCpfCnpj.getIdCliente())) {
-            JOptionPane.showMessageDialog(this, "Este documento já existe!"
-                    + "\nTente novamente!!!");
-            doc = true;
-        }
-        //Cadastro a partir das validações
-        if ((jrbCpf.isSelected() || jrbCnpj.isSelected()) && !doc && !jtfNomeCliente.getText().isEmpty() && !jtfCpfCnpj.getText().isEmpty()) {
-            try {
-                cli.setIdCliente(cadClientes.addIdCli());
-                cadClientes.addCliente(cli);
-                addRowToTableBD();
-                jbLimpar.doClick();
-                JOptionPane.showMessageDialog(this, cli.getNomeCliente() + " cadastrado com sucesso!");
-            } catch (SQLException ex) {
-                Logger.getLogger(jfCliente.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Cadastro incompleto.");
+    public Boolean validaInputs() throws SQLException {
+        String telefone = jtfTelefone.getText();
+        
+        if (jtfNomeCliente.getText().isEmpty() ||
+                jtfTelefone.getText().isEmpty() ||
+                jtfEndereco.getText().isEmpty() ||
+                jtfCpfCnpj.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Todos os campos devem ser preenchidos!",
+                    ".: Erro :.", JOptionPane.ERROR_MESSAGE);
+            jtfNomeCliente.requestFocus();
+            return false;
         }
         
+        if (telefone.length() < 14) {
+            JOptionPane.showMessageDialog(this,
+                    "Telefone informado esta incorreto",
+                    ".: Erro :.", JOptionPane.ERROR_MESSAGE);
+            jtfTelefone.requestFocus();
+            return false;
+        }
+        
+        if (!jrbCpf.isSelected() && !jrbCnpj.isSelected()) {
+            JOptionPane.showMessageDialog(this,
+                    "Selecione o CPF ou o CNPJ.",
+                    ".: Erro :.", JOptionPane.ERROR_MESSAGE);
+            jrbCpf.requestFocus();
+            return false;
+        }
+        
+        ClienteServicos clienteS = ServicosFactory.getClienteServicos();
+        if (jrbCpf.isSelected()) {
+            String cpf = jtfCpfCnpj.getText();
+            
+            if (!ValidaCPF.isCPF(cpf)) {
+                JOptionPane.showMessageDialog(this,
+                        "CPF informado esta incorreto!!!",
+                        ".: Erro :.", JOptionPane.ERROR_MESSAGE);
+                jtfCpfCnpj.requestFocus();
+                return false;
+            
+            } else {
+                if (clienteS.verCPF(cpf)) {
+                    JOptionPane.showMessageDialog(this,
+                        "CPF informado já está em uso!",
+                        ".: Erro :.", JOptionPane.ERROR_MESSAGE);
+                    jtfCpfCnpj.requestFocus();
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    private void jbSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSalvarActionPerformed
+        try {
+            // TODO add your handling code here:
+            if (validaInputs()) {
+                int id = cadClientes.addIdCli();
+                String nomeCliente = jtfNomeCliente.getText();
+                String cpf = "";
+                String cnpj = "";
+                if (jrbCpf.isSelected()) {
+                    cpf = jtfCpfCnpj.getText();
+                } else {
+                    cnpj = jtfCpfCnpj.getText();
+                }
+                String telefone = jtfTelefone.getText();
+                String endereco = jtfEndereco.getText();
+                
+                Cliente c = new Cliente(id, nomeCliente, cpf, endereco, telefone, cnpj);
+                ClienteServicos clienteS = ServicosFactory.getClienteServicos();
+                
+                try {
+                    clienteS.cadCliente(c);
+                    jbLimpar.doClick();
+                    addRowToTableBD();
+                    JOptionPane.showMessageDialog(this, "Cliente foi salvo com sucesso!");
+                } catch(SQLException ex) {
+                    JOptionPane.showMessageDialog(rootPane, "Erro! " + ex.getMessage(),
+                        "erro", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jfCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jbSalvarActionPerformed
+
+    private void jbEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jbEditarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -337,7 +416,11 @@ public class jfCliente extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton jbCancelar;
+    private javax.swing.JButton jbConfirmar;
+    private javax.swing.JButton jbDeletar;
+    private javax.swing.JButton jbEditar;
     private javax.swing.JButton jbLimpar;
+    private javax.swing.JButton jbSair;
     private javax.swing.JButton jbSalvar;
     private javax.swing.JRadioButton jrbCnpj;
     private javax.swing.JRadioButton jrbCpf;

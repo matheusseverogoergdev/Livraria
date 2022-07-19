@@ -14,7 +14,7 @@ import java.sql.SQLException;
  */
 public class Conexao {
     // cria uma constante com o endereço do DB e schema
-    private static String url = "jdbc:mysql://localhost:3306/tlivrariaOOJF";
+    private static String url = "jdbc:mysql://localhost:3306/livrariajf";
     
     // cria uma constante com o user do DB
     private static String user = "root";

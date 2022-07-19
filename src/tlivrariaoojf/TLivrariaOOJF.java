@@ -23,6 +23,9 @@ import javax.swing.JTextArea;
 import br.com.senactech.tLivrariaOOJF.view.jfCliente;
 import br.com.senactech.tLivrariaOOJF.view.jfEditora;
 import br.com.senactech.tLivrariaOOJF.view.jfLivro;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author jairb
@@ -76,9 +79,13 @@ public class TLivrariaOOJF extends JFrame implements ActionListener{
 
     public void actionPerformed(ActionEvent e) {
         if ("mClientes".equals(e.getActionCommand())) {
-            jfCliente c = new jfCliente();
-            c.setVisible(true);
-            c.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            try {
+                jfCliente c = new jfCliente();
+                c.setVisible(true);
+                c.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            } catch (SQLException ex) {
+                Logger.getLogger(TLivrariaOOJF.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if ("mEditoras".equals(e.getActionCommand())) {
             jfEditora ed = new jfEditora();

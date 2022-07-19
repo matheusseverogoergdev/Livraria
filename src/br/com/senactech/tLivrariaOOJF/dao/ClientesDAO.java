@@ -32,11 +32,12 @@ public class ClientesDAO {
             PreparedStatement pStat = con.prepareStatement("INSERT INTO cliente VALUES (null, ?, ?, ?, ?, ?)");
             pStat.setString(1, cVO.getNomeCliente());
             pStat.setString(2, cVO.getCpf());
+            System.out.println(cVO.getTelefone());
             pStat.setString(3, cVO.getTelefone());
             pStat.setString(4, cVO.getEndereco());
             pStat.setString(5, cVO.getCnpj());
 //            ResultSet rsPStat = pStat.executeQuery();
-            pStat.executeQuery();
+            pStat.executeUpdate();
 
         } catch(Exception e) {
             throw new SQLException("Erro ao inserir Cliente!\n" + e.getMessage());
@@ -77,6 +78,27 @@ public class ClientesDAO {
 //            stat.close();
             con.close();
         }
+    }
+    
+    public boolean verCPF(String cpf) throws SQLException {
+        Connection con = Conexao.getConexao();
+        boolean verCPF = false;
+        
+        try {
+            PreparedStatement sqlPS = con.prepareStatement("SELECT cpf FROM cliente WHERE cpf = ?");
+            sqlPS.setString(1, cpf);
+            ResultSet rsPS = sqlPS.executeQuery();
+            while(rsPS.next()) {
+                verCPF = !rsPS.wasNull();
+            }
+        } catch(SQLException e) {
+            throw new SQLException("Pessoa com este CPF não existe!\n" +
+                e.getMessage());
+        } finally {
+            con.close();
+        }
+        
+        return verCPF;
     }
     
     public boolean verificaCliente(int idCliente) throws SQLException {
