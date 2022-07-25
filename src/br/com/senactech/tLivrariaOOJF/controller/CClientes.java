@@ -17,25 +17,6 @@ public class CClientes {
     ArrayList<Cliente> clientes = new ArrayList<>();
     int idCliente = 1;
 
-    public void mokClientes() {
-        Cliente cli = new Cliente();
-        cli.setIdCliente(this.addIdCli());
-        cli.setNomeCliente("Juventino Florencio");
-        cli.setCpf("123");
-        cli.setCnpj(null);
-        cli.setEndereco("Flores da Cunha");
-        cli.setTelefone("51 44334433");
-        this.addCliente(cli);
-        Cliente cli2 = new Cliente();
-        cli2.setIdCliente(this.addIdCli());
-        cli2.setNomeCliente("Josnelson das Candongas");
-        cli2.setCpf(null);
-        cli2.setCnpj("321");
-        cli2.setEndereco("Dorival de Oliveira");
-        cli2.setTelefone("51 9 99998888");
-        this.addCliente(cli2);
-    }
-
     public int addIdCli() {
             return this.idCliente++;
     }

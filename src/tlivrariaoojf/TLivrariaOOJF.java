@@ -8,6 +8,8 @@ package tlivrariaoojf;
 import br.com.senactech.tLivrariaOOJF.controller.CClientes;
 import br.com.senactech.tLivrariaOOJF.controller.CEditoras;
 import br.com.senactech.tLivrariaOOJF.controller.CLivros;
+import br.com.senactech.tLivrariaOOJF.services.EditoraServicos;
+import br.com.senactech.tLivrariaOOJF.services.ServicosFactory;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -26,6 +28,7 @@ import br.com.senactech.tLivrariaOOJF.view.jfLivro;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 /**
  *
  * @author jairb
@@ -88,14 +91,39 @@ public class TLivrariaOOJF extends JFrame implements ActionListener{
             }
         }
         if ("mEditoras".equals(e.getActionCommand())) {
-            jfEditora ed = new jfEditora();
-            ed.setVisible(true);
-            ed.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            try {
+                jfEditora ed = new jfEditora();
+                ed.setVisible(true);
+                ed.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            } catch (SQLException ex) {
+                Logger.getLogger(TLivrariaOOJF.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         if ("mLivros".equals(e.getActionCommand())) {
-            jfLivro liv = new jfLivro();
-            liv.setVisible(true);
-            liv.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+            try {
+                jfLivro liv = new jfLivro();
+                liv.setVisible(true);
+                liv.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+                
+                EditoraServicos editoraS = ServicosFactory.getEditoraServicos();
+                
+                if (editoraS.getEditoras().isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Você deve cadastrar uma editora antes de cadastrar um livro!",
+                            ".: Erro :.", JOptionPane.ERROR_MESSAGE);
+                    liv.dispose();
+                }
+                
+//                if (cadEditoras.getEditora().isEmpty()) {
+//                    JOptionPane.showMessageDialog(this,
+//                            "Você deve cadastrar uma editora antes de cadastrar um livro!",
+//                            ".: Erro :.", JOptionPane.ERROR_MESSAGE);
+//                    liv.dispose();
+//                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(TLivrariaOOJF.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
@@ -136,10 +164,6 @@ public class TLivrariaOOJF extends JFrame implements ActionListener{
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        cadClientes.mokClientes();
-        cadEditoras.mokEditoras();
-        cadLivros.mokLivros();
-        
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();

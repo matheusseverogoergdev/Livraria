@@ -23,7 +23,7 @@ public class LivrosDAO {
         
         try {
             PreparedStatement pStat = con.prepareStatement("INSERT INTO livro VALUES"
-                    + " (null, ?, ?, ?, ?, ?, ?, ?");
+                    + " (null, ?, ?, ?, ?, ?, ?, ?)");
             pStat.setString(1, lVO.getTitulo());
             pStat.setString(2, lVO.getAutor());
             pStat.setString(3, lVO.getAssunto());
@@ -31,7 +31,7 @@ public class LivrosDAO {
             pStat.setInt(5, lVO.getEstoque());
             pStat.setFloat(6, lVO.getPreco());
             pStat.setInt(7, lVO.getIdEditora());
-            pStat.executeQuery();
+            pStat.executeUpdate();
         } catch(SQLException e) {
             throw new SQLException("Erro ao inserir o Livro!\n" + e.getMessage());
         } finally {
@@ -58,6 +58,7 @@ public class LivrosDAO {
                 l.setEstoque(rsPStat.getInt("estoque"));
                 l.setPreco(rsPStat.getFloat("preco"));
                 l.setIdEditora(rsPStat.getInt("idEditora"));
+                livros.add(l);
             }
             return livros;
         } catch(SQLException e) {
@@ -68,13 +69,13 @@ public class LivrosDAO {
         }
     }
     
-    public boolean verificaLivro(int idLivro) throws SQLException {
+    public boolean verificaLivro(String isbn) throws SQLException {
         Connection con = Conexao.getConexao();
         boolean verLivro = false;
         
         try {
-            PreparedStatement pStat = con.prepareStatement("SELECT idLivro FROM livro WHERE idLivro = ?");
-            pStat.setInt(1, idLivro);
+            PreparedStatement pStat = con.prepareStatement("SELECT idLivro FROM livro WHERE isbn = ?");
+            pStat.setString(1, isbn);
             ResultSet rs = pStat.executeQuery();
             
             while (rs.next()) {
@@ -82,12 +83,46 @@ public class LivrosDAO {
             }
             
         } catch(SQLException e) {
-            throw new SQLException("Livro com este id não existe!\n"
+            throw new SQLException("Livro com este ISBN não existe!\n"
             + e.getMessage());
         } finally {
             con.close();
         }
         return verLivro;
+    }
+    
+    public Livro getByDoc(String isbn) throws SQLException {
+        // Busca conexão com o BD
+        Connection con = Conexao.getConexao();
+        Livro l = new Livro();
+        
+        System.out.println("isbn: " + isbn);
+        
+        try {
+            PreparedStatement sqlPS = con.prepareStatement("SELECT * FROM livro"
+                    + " WHERE isbn = '" + isbn + "'");
+            ResultSet rsPS = sqlPS.executeQuery();
+            
+            while (rsPS.next()) {
+                System.out.println("idEditora: " + rsPS.getInt("idEditora"));
+                
+                l.setIdLivro(rsPS.getInt("idLivro"));
+                l.setTitulo(rsPS.getString("titulo"));
+                l.setAutor(rsPS.getString("autor"));
+                l.setAssunto(rsPS.getString("assunto"));
+                l.setIsbn(rsPS.getString("isbn"));
+                l.setEstoque(rsPS.getInt("estoque"));
+                l.setPreco(rsPS.getFloat("preco"));
+                l.setIdEditora(rsPS.getInt("idEditora"));
+            }
+        } catch(SQLException ex) {
+            throw new SQLException("Livro com este ISBN não existe!\n"
+            + ex.getMessage());
+        } finally {
+            con.close();
+        }
+        
+        return l;
     }
     
     public void deletarLivro(int id) throws SQLException {
@@ -97,7 +132,7 @@ public class LivrosDAO {
             PreparedStatement pStat = con.prepareStatement("DELETE FROM livro "
                     + "WHERE idLivro = ?");
             pStat.setInt(1, id);
-            pStat.executeQuery();
+            pStat.executeUpdate();
         } catch(SQLException e) {
             throw new SQLException("Erro ao deletar Livro. \n"
                 + e.getMessage());
@@ -121,7 +156,7 @@ public class LivrosDAO {
             pStat.setInt(6, lVO.getEstoque());
             pStat.setFloat(7, lVO.getPreco());
             pStat.setInt(8, lVO.getIdEditora());
-            pStat.executeQuery();
+            pStat.executeUpdate();
         } catch(SQLException e) {
             throw new SQLException("Erro ao atualizar o Cliente. \n"
                 + e.getMessage());

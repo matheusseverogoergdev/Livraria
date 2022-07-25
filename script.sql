@@ -27,3 +27,7 @@ CREATE TABLE livro (
 );
 
 alter table cliente add UNIQUE(cpf);
+
+ALTER TABLE livro ADD UNIQUE(isbn);
+
+ALTER TABLE editora ADD UNIQUE(nome);

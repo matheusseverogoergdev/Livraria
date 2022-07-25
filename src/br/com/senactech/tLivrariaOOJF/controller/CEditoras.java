@@ -17,23 +17,6 @@ public class CEditoras {
     ArrayList<Editora> editora = new ArrayList<>();
     int idEdt = 1;
 
-    public void mokEditoras() {
-        Editora edt = new Editora();
-        edt.setIdEditora(this.addIdEdt());
-        edt.setNmEditora("Senac");
-        edt.setEndereco("Venancio Aires");
-        edt.setTelefone("51 44223322");
-        edt.setGerente("Visotto");
-        this.addEditora(edt);
-        Editora edt2 = new Editora();
-        edt2.setIdEditora(this.addIdEdt());
-        edt2.setNmEditora("Abril");
-        edt2.setEndereco("São Paulo");
-        edt2.setTelefone("11 33443344");
-        edt2.setGerente("Abreu");
-        this.addEditora(edt2);
-    }
-
     public int addIdEdt() {
         return this.idEdt++;
     }

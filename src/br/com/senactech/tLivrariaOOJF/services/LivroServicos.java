@@ -25,9 +25,14 @@ public class LivroServicos {
         return lDAO.buscarLivros();
     }
     
-    public boolean verificaLivro(int id) throws SQLException {
+    public boolean verificaLivro(String isbn) throws SQLException {
         LivrosDAO lDAO = DAOFactory.getLivroDAO();
-        return lDAO.verificaLivro(id);
+        return lDAO.verificaLivro(isbn);
+    }
+    
+    public Livro buscarLivroBD(String isbn) throws SQLException {
+        LivrosDAO lDAO = DAOFactory.getLivroDAO();
+        return lDAO.getByDoc(isbn);
     }
     
     public void deletarLivro(int id) throws SQLException {

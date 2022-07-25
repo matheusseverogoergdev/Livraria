@@ -101,6 +101,62 @@ public class ClientesDAO {
         return verCPF;
     }
     
+    public Cliente getByDocBD(String cpf) throws SQLException {
+        // Busca conexão com o BD
+        Connection con = Conexao.getConexao();
+        Cliente c = new Cliente();
+        
+        try {
+            PreparedStatement sqlPS = con.prepareStatement("SELECT * FROM cliente"
+                    + " WHERE cpf = ?");
+            sqlPS.setString(1, cpf);
+            ResultSet rsPS = sqlPS.executeQuery();
+            while(rsPS.next()) {
+                c.setIdCliente(rsPS.getInt("idCliente"));
+                c.setNomeCliente(rsPS.getString("nomeCliente"));
+                c.setCpf(rsPS.getString("cpf"));
+                c.setTelefone(rsPS.getString("telefone"));
+                c.setEndereco(rsPS.getString("endereco"));
+                c.setCnpj(rsPS.getString("cnpj"));
+            }
+        } catch(SQLException e) {
+            throw new SQLException("Pessoa com este CPF não existe!\n"
+            + e.getMessage());
+        } finally {
+            con.close();
+        }
+        
+        return c;
+    }
+    
+    public Cliente getByDocCnpjBD(String cnpj) throws SQLException {
+        // Busca conexão com o BD
+        Connection con = Conexao.getConexao();
+        Cliente c = new Cliente();
+        
+        try {
+            PreparedStatement sqlPS = con.prepareStatement("SELECT * FROM cliente"
+                    + " WHERE cnpj = ?");
+            sqlPS.setString(1, cnpj);
+            ResultSet rsPS = sqlPS.executeQuery();
+            while(rsPS.next()) {
+                c.setIdCliente(rsPS.getInt("idCliente"));
+                c.setNomeCliente(rsPS.getString("nomeCliente"));
+                c.setCpf(rsPS.getString("cpf"));
+                c.setTelefone(rsPS.getString("telefone"));
+                c.setEndereco(rsPS.getString("endereco"));
+                c.setCnpj(rsPS.getString("cnpj"));
+            }
+        } catch(SQLException e) {
+            throw new SQLException("Pessoa com este CNPJ não existe!\n"
+            + e.getMessage());
+        } finally {
+            con.close();
+        }
+        
+        return c;
+    }
+    
     public boolean verificaCliente(int idCliente) throws SQLException {
         Connection con = Conexao.getConexao();
 //        Statement stat = con.createStatement();
@@ -140,7 +196,7 @@ public class ClientesDAO {
 
             PreparedStatement pStat = con.prepareStatement("DELETE FROM cliente WHERE idCliente = ?");
             pStat.setInt(1, id);
-            pStat.executeQuery();
+            pStat.executeUpdate();
 
         } catch(SQLException e) {
             throw new SQLException("Erro ao deletar Cliente. \n"
@@ -153,35 +209,23 @@ public class ClientesDAO {
     
     public void atualizarCliente(Cliente cVO) throws SQLException {
         Connection con = Conexao.getConexao();
-//        Statement stat = con.createStatement();
         
         try {
-//            String sql;
-//            sql = "UPDATE cliente SET "
-//                    + "idCliente = " + cVO.getIdCliente() + ", "
-//                    + "nomeCliente = '" + cVO.getNomeCliente() + "', "
-//                    + "cpf = '" + cVO.getCpf() + "', "
-//                    + "telefone = '" + cVO.getTelefone() + "', "
-//                    + "endereco = '" + cVO.getEndereco() + "', "
-//                    + "cnpj = '" + cVO.getCnpj() + "'";
-//            stat.executeUpdate(sql);
-
             PreparedStatement pStat = con.prepareStatement("UPDATE cliente SET "
-                    + "idCliente = ?," + " nomeCliente = ?," + " cpf = ?, "
-                    + "telefone = ?," + " endereco = ?," + " cnpj = ?");
-            pStat.setInt(1, cVO.getIdCliente());
-            pStat.setString(2, cVO.getNomeCliente());
-            pStat.setString(3, cVO.getCpf());
-            pStat.setString(4, cVO.getTelefone());
-            pStat.setString(5, cVO.getEndereco());
-            pStat.setString(6, cVO.getCnpj());
-            pStat.executeQuery();
+                    + " nomeCliente = ?," + " cpf = ?, "
+                    + "telefone = ?," + " endereco = ?," + " cnpj = ? "
+                    + "WHERE idCliente = " + cVO.getIdCliente());
+            pStat.setString(1, cVO.getNomeCliente());
+            pStat.setString(2, cVO.getCpf());
+            pStat.setString(3, cVO.getTelefone());
+            pStat.setString(4, cVO.getEndereco());
+            pStat.setString(5, cVO.getCnpj());
+            pStat.executeUpdate();
 
         } catch(SQLException e) {
             throw new SQLException("Erro ao atualizar o Cliente. \n"
                 + e.getMessage());
         } finally {
-//            stat.close();
             con.close();
         }
         

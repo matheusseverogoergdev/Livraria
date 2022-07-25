@@ -3,8 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/usuario/Documents/GitHub/LivrariaJF-Severo/src/tlivrariaoojf/TLivrariaOOJF.java</file>
-            <file>file:/D:/usuario/Documents/GitHub/LivrariaJF-Severo/src/br/com/senactech/tLivrariaOOJF/conexao/Conexao.java</file>
+            <file>file:/D:/usuario/Documents/GitHub/LivrariaJF-Severo/src/br/com/senactech/tLivrariaOOJF/dao/ClientesDAO.java</file>
+            <file>file:/D:/usuario/Documents/GitHub/LivrariaJF-Severo/src/br/com/senactech/tLivrariaOOJF/dao/LivrosDAO.java</file>
         </group>
     </open-files>
 </project-private>

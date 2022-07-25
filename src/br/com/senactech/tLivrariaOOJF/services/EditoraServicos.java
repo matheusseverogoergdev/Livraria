@@ -25,6 +25,16 @@ public class EditoraServicos {
         return eDAO.buscarEditoras();
     }
     
+//    public Editora buscarEditora(int id) throws SQLException {
+//        EditorasDAO eDAO = DAOFactory.getEditoraDAO();
+//        return eDAO.buscarEditora(id);
+//    }
+    
+    public Editora buscarEditora(String nome) throws SQLException {
+        EditorasDAO eDAO = DAOFactory.getEditoraDAO();
+        return eDAO.buscarEditora(nome);
+    }
+    
     public boolean verificaEditora(int id) throws SQLException {
         EditorasDAO eDAO = DAOFactory.getEditoraDAO();
         return eDAO.verificaEditora(id);
@@ -38,5 +48,10 @@ public class EditoraServicos {
     public void atualizarEditora(Editora eVO) throws SQLException {
         EditorasDAO eDAO = DAOFactory.getEditoraDAO();
         eDAO.atualizarEditora(eVO);
+    }
+    
+    public String getNomeEditora(int id) throws SQLException {
+        EditorasDAO eDAO = DAOFactory.getEditoraDAO();
+        return eDAO.getNomeEditora(id);
     }
 }

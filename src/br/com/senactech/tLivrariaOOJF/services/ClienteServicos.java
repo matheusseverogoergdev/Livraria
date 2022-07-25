@@ -30,6 +30,16 @@ public class ClienteServicos {
         return cDAO.verCPF(cpf);
     }
     
+    public Cliente buscarClienteBD(String cpf) throws SQLException {
+        ClientesDAO cDAO = DAOFactory.getClienteDAO();
+        return cDAO.getByDocBD(cpf);
+    }
+    
+    public Cliente buscarClienteCnpjBD(String cnpj) throws SQLException {
+        ClientesDAO cDAO = DAOFactory.getClienteDAO();
+        return cDAO.getByDocCnpjBD(cnpj);
+    }
+    
     public boolean verificaCliente(int id) throws SQLException {
         ClientesDAO cDAO = DAOFactory.getClienteDAO();
         return cDAO.verificaCliente(id);

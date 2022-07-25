@@ -14,6 +14,8 @@ import br.com.senactech.tLivrariaOOJF.util.ValidaCPF;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import static tlivrariaoojf.TLivrariaOOJF.cadClientes;
 
 /**
@@ -54,7 +56,6 @@ public class jfCliente extends javax.swing.JFrame {
         jtfTelefone = new javax.swing.JTextField();
         jbSalvar = new javax.swing.JButton();
         jbLimpar = new javax.swing.JButton();
-        jbCancelar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtClientes = new javax.swing.JTable();
         jbEditar = new javax.swing.JButton();
@@ -82,6 +83,69 @@ public class jfCliente extends javax.swing.JFrame {
         jLabel5.setText("Telefone:");
 
         jtfNomeCliente.setToolTipText("");
+        jtfNomeCliente.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfNomeClienteFocusLost(evt);
+            }
+        });
+        jtfNomeCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jtfNomeClienteMouseExited(evt);
+            }
+        });
+        jtfNomeCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfNomeClienteKeyTyped(evt);
+            }
+        });
+
+        jtfCpfCnpj.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfCpfCnpjFocusLost(evt);
+            }
+        });
+        jtfCpfCnpj.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jtfCpfCnpjMouseExited(evt);
+            }
+        });
+        jtfCpfCnpj.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfCpfCnpjKeyTyped(evt);
+            }
+        });
+
+        jtfEndereco.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfEnderecoFocusLost(evt);
+            }
+        });
+        jtfEndereco.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jtfEnderecoMouseExited(evt);
+            }
+        });
+        jtfEndereco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfEnderecoKeyTyped(evt);
+            }
+        });
+
+        jtfTelefone.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jtfTelefoneFocusLost(evt);
+            }
+        });
+        jtfTelefone.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jtfTelefoneMouseExited(evt);
+            }
+        });
+        jtfTelefone.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfTelefoneKeyTyped(evt);
+            }
+        });
 
         jbSalvar.setText("Salvar");
         jbSalvar.addActionListener(new java.awt.event.ActionListener() {
@@ -94,13 +158,6 @@ public class jfCliente extends javax.swing.JFrame {
         jbLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbLimparActionPerformed(evt);
-            }
-        });
-
-        jbCancelar.setText("Cancelar");
-        jbCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbCancelarActionPerformed(evt);
             }
         });
 
@@ -121,10 +178,16 @@ public class jfCliente extends javax.swing.JFrame {
             }
         });
         jtClientes.setToolTipText("");
+        jtClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtClientesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jtClientes);
         jtClientes.getAccessibleContext().setAccessibleName("");
 
         jbEditar.setText("Editar");
+        jbEditar.setEnabled(false);
         jbEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbEditarActionPerformed(evt);
@@ -132,10 +195,27 @@ public class jfCliente extends javax.swing.JFrame {
         });
 
         jbConfirmar.setText("Confirmar");
+        jbConfirmar.setEnabled(false);
+        jbConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbConfirmarActionPerformed(evt);
+            }
+        });
 
         jbDeletar.setText("Deletar");
+        jbDeletar.setEnabled(false);
+        jbDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbDeletarActionPerformed(evt);
+            }
+        });
 
         jbSair.setText("Sair");
+        jbSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSairActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -170,10 +250,8 @@ public class jfCliente extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jbSalvar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jbLimpar)
-                                .addGap(18, 18, 18)
-                                .addComponent(jbCancelar))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbLimpar))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(jbEditar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -209,8 +287,7 @@ public class jfCliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbSalvar)
-                    .addComponent(jbLimpar)
-                    .addComponent(jbCancelar))
+                    .addComponent(jbLimpar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
@@ -246,13 +323,23 @@ public class jfCliente extends javax.swing.JFrame {
         jtfTelefone.setText("");
         bgCpfCnpj.clearSelection();
         jtfNomeCliente.requestFocus();
+        
+        jtfCpfCnpj.setEnabled(true);
+        jbSalvar.setEnabled(true);
+        jbEditar.setEnabled(false);
+        jbConfirmar.setEnabled(false);
+        jbDeletar.setEnabled(false);
+        
+        jTableFilterClear();
     }//GEN-LAST:event_jbLimparActionPerformed
 
-    private void jbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCancelarActionPerformed
-        // TODO add your handling code here:
-        jfCliente.this.dispose();
-    }//GEN-LAST:event_jbCancelarActionPerformed
-    
+    public void jTableFilterClear() {
+        DefaultTableModel model = (DefaultTableModel) jtClientes.getModel();
+        final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        jtClientes.setRowSorter(sorter);
+        sorter.setRowFilter(null);
+    }
+        
     
     public void addRowToTableBD() throws SQLException {
         //Cria obj model e recebe a modelagem da tabela JtPessoa do JFrame
@@ -313,15 +400,16 @@ public class jfCliente extends javax.swing.JFrame {
                 jtfCpfCnpj.requestFocus();
                 return false;
             
-            } else {
-                if (clienteS.verCPF(cpf)) {
-                    JOptionPane.showMessageDialog(this,
-                        "CPF informado já está em uso!",
-                        ".: Erro :.", JOptionPane.ERROR_MESSAGE);
-                    jtfCpfCnpj.requestFocus();
-                    return false;
-                }
             }
+//            else {;
+//                if (clienteS.verCPF(cpf)) {
+//                    JOptionPane.showMessageDialog(this,
+//                        "CPF informado já está em uso!",
+//                        ".: Erro :.", JOptionPane.ERROR_MESSAGE);
+//                    jtfCpfCnpj.requestFocus();
+//                    return false;
+//                }
+//            }
         }
         
         return true;
@@ -348,8 +436,8 @@ public class jfCliente extends javax.swing.JFrame {
                 
                 try {
                     clienteS.cadCliente(c);
-                    jbLimpar.doClick();
                     addRowToTableBD();
+                    jbLimpar.doClick();
                     JOptionPane.showMessageDialog(this, "Cliente foi salvo com sucesso!");
                 } catch(SQLException ex) {
                     JOptionPane.showMessageDialog(rootPane, "Erro! " + ex.getMessage(),
@@ -364,8 +452,226 @@ public class jfCliente extends javax.swing.JFrame {
 
     private void jbEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditarActionPerformed
         // TODO add your handling code here:
-        
+        try {
+            jbDeletar.setEnabled(false);
+            jbSalvar.setEnabled(false);
+            jbEditar.setEnabled(false);
+            jtfCpfCnpj.setEnabled(false);
+            jbConfirmar.setEnabled(true);
+            jbLimpar.setText("Cancelar");
+            
+            int linha;
+            String cpfCnpj;
+            linha = jtClientes.getSelectedRow();
+            ClienteServicos clienteS = ServicosFactory.getClienteServicos();
+            Cliente c = new Cliente();
+            if (!((String) jtClientes.getValueAt(linha, 2)).isBlank()) {
+                cpfCnpj = (String) jtClientes.getValueAt(linha, 2);
+                c = clienteS.buscarClienteBD(cpfCnpj);
+                jtfCpfCnpj.setText(c.getCpf());
+                jrbCpf.setSelected(true);
+                jrbCnpj.setSelected(false);
+            } else if (!((String) jtClientes.getValueAt(linha, 3)).isBlank()) {
+                cpfCnpj = (String) jtClientes.getValueAt(linha, 3);
+                c = clienteS.buscarClienteCnpjBD(cpfCnpj);
+                jtfCpfCnpj.setText(c.getCnpj());
+                jrbCpf.setSelected(false);
+                jrbCnpj.setSelected(true);
+            } else {
+                System.out.println("Cpf e Cnpj não foram preenchidos.");
+            }
+            
+            jtfNomeCliente.setText(c.getNomeCliente());
+            jtfEndereco.setText(c.getEndereco());
+            jtfTelefone.setText(c.getTelefone());
+            
+        } catch(SQLException ex) {
+            Logger.getLogger(jfCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jbEditarActionPerformed
+
+    private void jtClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtClientesMouseClicked
+        // TODO add your handling code here:
+        jbDeletar.setEnabled(true);
+        jbEditar.setEnabled(true);
+    }//GEN-LAST:event_jtClientesMouseClicked
+
+    private void jbSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSairActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jbSairActionPerformed
+
+    private void jbDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDeletarActionPerformed
+        // TODO add your handling code here:
+        try {
+            jbEditar.setEnabled(false);
+            int linha;
+            String cpfCnpj;
+            linha = jtClientes.getSelectedRow();
+            ClienteServicos clienteS = ServicosFactory.getClienteServicos();
+            Cliente c = new Cliente();
+
+            if (!((String) jtClientes.getValueAt(linha, 2)).isBlank()) {
+                cpfCnpj = (String) jtClientes.getValueAt(linha, 2);
+                c = clienteS.buscarClienteBD(cpfCnpj);
+            } else if (!((String) jtClientes.getValueAt(linha, 3)).isBlank()) {
+                cpfCnpj = (String) jtClientes.getValueAt(linha, 3);
+                c = clienteS.buscarClienteCnpjBD(cpfCnpj);
+                System.out.println(c);
+            } else {
+                System.out.println("Cpf e Cnpj não foram preenchidos.");
+            }
+            
+            Object[] resp = {"Sim", "Não"};
+            int resposta = JOptionPane.showOptionDialog(this,
+                "Deseja realmente deletar " + c.getNomeCliente() + "?",
+                ".: Deletar :.", JOptionPane.DEFAULT_OPTION,
+                JOptionPane.WARNING_MESSAGE, null, resp, resp[0]);
+            
+            if (resposta == 0) {
+                try {
+                    clienteS.deletarCliente(c.getIdCliente());
+                    addRowToTableBD();
+                    JOptionPane.showMessageDialog(this, "Cliente deletado com sucesso!",
+                    ".: Deletar :.", JOptionPane.INFORMATION_MESSAGE);
+                } catch(SQLException ex) {
+                    Logger.getLogger(jfCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Entendemos sua decisão!",
+                    ".: Deletar :.", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+        } catch(SQLException ex) {
+            Logger.getLogger(jfCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            jbDeletar.setEnabled(false);
+        }
+    }//GEN-LAST:event_jbDeletarActionPerformed
+
+    private void jbConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbConfirmarActionPerformed
+        try {
+            // TODO add your handling code here:
+            if (validaInputs()) {
+                ClienteServicos clienteS = ServicosFactory.getClienteServicos();
+                Cliente c = new Cliente();
+                String cpfCnpj = jtfCpfCnpj.getText();
+                if (jrbCpf.isSelected() && !cpfCnpj.isBlank()) {
+                    c = clienteS.buscarClienteBD(cpfCnpj);
+                    c.setCpf(cpfCnpj);
+                } else if (jrbCnpj.isSelected() && !cpfCnpj.isBlank()) {
+                    c = clienteS.buscarClienteCnpjBD(cpfCnpj);
+                    c.setCnpj(cpfCnpj);
+                } else {
+                    System.out.println("Cpf e Cnpj não foram preenchidos.");
+                }
+                
+                c.setEndereco(jtfEndereco.getText());
+                c.setNomeCliente(jtfNomeCliente.getText());
+                c.setTelefone(jtfTelefone.getText());
+                
+                clienteS.atualizarCliente(c);
+                addRowToTableBD();
+                
+                jbLimpar.doClick();
+                jbLimpar.setText("Limpar");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(jfCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jbConfirmarActionPerformed
+
+    private void jtfNomeClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNomeClienteKeyTyped
+        // TODO add your handling code here:
+        String caracteres = "' ";
+        
+        if (!Character.isAlphabetic(evt.getKeyChar())
+                && !caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+        
+        if ((jtfNomeCliente.getText() + evt.getKeyChar()).length() > 60) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtfNomeClienteKeyTyped
+
+    private void jtfCpfCnpjKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfCpfCnpjKeyTyped
+        // TODO add your handling code here:
+        String caracteres = "0987654321/- ";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+        
+        if ((jtfCpfCnpj.getText() + evt.getKeyChar()).length() > 20) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtfCpfCnpjKeyTyped
+
+    private void jtfTelefoneKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfTelefoneKeyTyped
+        // TODO add your handling code here:
+        String caracteres = "0987654321()- ";
+        if (!caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+        
+        if ((jtfTelefone.getText() + evt.getKeyChar()).length() > 20) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtfTelefoneKeyTyped
+
+    private void jtfEnderecoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfEnderecoKeyTyped
+        // TODO add your handling code here:
+        String caracteres = "0123456789ªº-' ";
+        
+        if (!Character.isAlphabetic(evt.getKeyChar())
+                && !caracteres.contains(evt.getKeyChar() + "")) {
+            evt.consume();
+        }
+        
+        if ((jtfEndereco.getText() + evt.getKeyChar()).length() > 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jtfEnderecoKeyTyped
+
+    private void jtfNomeClienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfNomeClienteFocusLost
+        // TODO add your handling code here:
+        jtfNomeCliente.setText(jtfNomeCliente.getText().toUpperCase().trim().replaceAll(" +", " "));
+    }//GEN-LAST:event_jtfNomeClienteFocusLost
+
+    private void jtfNomeClienteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfNomeClienteMouseExited
+        // TODO add your handling code here:
+        jtfNomeCliente.setText(jtfNomeCliente.getText().toUpperCase().trim().replaceAll(" +", " "));
+    }//GEN-LAST:event_jtfNomeClienteMouseExited
+
+    private void jtfCpfCnpjFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfCpfCnpjFocusLost
+        // TODO add your handling code here:
+        jtfCpfCnpj.setText(jtfCpfCnpj.getText().toUpperCase().trim().replaceAll(" +", " "));
+    }//GEN-LAST:event_jtfCpfCnpjFocusLost
+
+    private void jtfCpfCnpjMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfCpfCnpjMouseExited
+        // TODO add your handling code here:
+        jtfCpfCnpj.setText(jtfCpfCnpj.getText().toUpperCase().trim().replaceAll(" +", " "));
+    }//GEN-LAST:event_jtfCpfCnpjMouseExited
+
+    private void jtfTelefoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfTelefoneFocusLost
+        // TODO add your handling code here:
+        jtfTelefone.setText(jtfTelefone.getText().toUpperCase().trim().replaceAll(" +", " "));
+    }//GEN-LAST:event_jtfTelefoneFocusLost
+
+    private void jtfTelefoneMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfTelefoneMouseExited
+        // TODO add your handling code here:
+        jtfTelefone.setText(jtfTelefone.getText().toUpperCase().trim().replaceAll(" +", " "));
+    }//GEN-LAST:event_jtfTelefoneMouseExited
+
+    private void jtfEnderecoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfEnderecoFocusLost
+        // TODO add your handling code here:
+        jtfEndereco.setText(jtfEndereco.getText().toUpperCase().trim().replaceAll(" +", " "));
+    }//GEN-LAST:event_jtfEnderecoFocusLost
+
+    private void jtfEnderecoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfEnderecoMouseExited
+        // TODO add your handling code here:
+        jtfEndereco.setText(jtfEndereco.getText().toUpperCase().trim().replaceAll(" +", " "));
+    }//GEN-LAST:event_jtfEnderecoMouseExited
 
     /**
      * @param args the command line arguments
@@ -415,7 +721,6 @@ public class jfCliente extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JButton jbCancelar;
     private javax.swing.JButton jbConfirmar;
     private javax.swing.JButton jbDeletar;
     private javax.swing.JButton jbEditar;
