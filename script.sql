@@ -26,6 +26,17 @@ CREATE TABLE livro (
     FOREIGN KEY (idEditora) REFERENCES editora(idEditora)
 );
 
+CREATE TABLE compra (
+	idCompra INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    dataCompra DATE NOT NULL,
+    quantidadeCompra INT NOT NULL,
+    subTotal FLOAT NOT NULL,
+    idCliente INT NOT NULL UNIQUE,
+    idLivro INT NOT NULL UNIQUE,
+    FOREIGN KEY(idCliente) REFERENCES cliente(idCliente),
+    FOREIGN KEY(idLivro) REFERENCES livro(idLivro)
+);
+
 alter table cliente add UNIQUE(cpf);
 
 ALTER TABLE livro ADD UNIQUE(isbn);

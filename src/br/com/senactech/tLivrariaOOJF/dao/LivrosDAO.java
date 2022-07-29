@@ -144,18 +144,24 @@ public class LivrosDAO {
     
     public void atualizarLivro(Livro lVO) throws SQLException {
         Connection con = Conexao.getConexao();
+        System.out.println("Con: " + con);
         try {
             PreparedStatement pStat = con.prepareStatement("UPDATE livro SET "
-                        + "idLivro = ?," + "titulo = ?, autor = ?, assunto = ?,"
-                        + "isbn = ?, estoque = ?, preco = ?, idEditora = ?");
-            pStat.setInt(1, lVO.getIdLivro());
-            pStat.setString(2, lVO.getTitulo());
-            pStat.setString(3, lVO.getAutor());
-            pStat.setString(4, lVO.getAssunto());
-            pStat.setString(5, lVO.getIsbn());
-            pStat.setInt(6, lVO.getEstoque());
-            pStat.setFloat(7, lVO.getPreco());
-            pStat.setInt(8, lVO.getIdEditora());
+                        + "titulo = ?, autor = ?, assunto = ?, "
+                        + "isbn = ?, estoque = ?, preco = ?, idEditora = ? "
+                        + "WHERE idLivro = " + lVO.getIdLivro());
+//            pStat.setInt(1, lVO.getIdLivro());
+
+            pStat.setString(1, lVO.getTitulo());
+            pStat.setString(2, lVO.getAutor());
+            pStat.setString(3, lVO.getAssunto());
+            pStat.setString(4, lVO.getIsbn());
+            pStat.setInt(5, lVO.getEstoque());
+            pStat.setFloat(6, lVO.getPreco());
+            pStat.setInt(7, lVO.getIdEditora());
+            
+            System.out.println(pStat);
+            
             pStat.executeUpdate();
         } catch(SQLException e) {
             throw new SQLException("Erro ao atualizar o Cliente. \n"

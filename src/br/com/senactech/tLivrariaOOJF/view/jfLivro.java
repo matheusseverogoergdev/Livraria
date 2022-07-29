@@ -586,6 +586,8 @@ public class jfLivro extends javax.swing.JFrame {
                     LivroServicos livroS = ServicosFactory.getLivroServicos();
                     Livro l = livroS.buscarLivroBD(jtfISBN.getText());
                     
+                    System.out.println(l.toString());
+                    
                     l.setTitulo(jtfTitulo.getText());
                     l.setAssunto(jtfAssunto.getText());
                     l.setAutor(jtfAutor.getText());
@@ -596,6 +598,8 @@ public class jfLivro extends javax.swing.JFrame {
                     EditoraServicos editoraS = ServicosFactory.getEditoraServicos();
                     l.setIdEditora(editoraS.buscarEditora(jcbEditora.getSelectedItem().toString()).getIdEditora());
                 
+                    System.out.println(l.toString());
+                    
                     livroS.atualizarLivro(l);
                     addRowToTableBD();
                     
